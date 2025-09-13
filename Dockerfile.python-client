@@ -1,0 +1,40 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    libgl1-mesa-dev \
+    libglib2.0-0 \
+    cmake \
+    swig \
+    && rm -rf /var/lib/apt/lists/*
+
+# Use compatible pip version
+RUN pip install --upgrade "pip<24.1"
+
+# Install Python packages step by step for better error handling
+RUN pip install "numpy<2.0"
+RUN pip install opencv-python-headless==4.5.3.56
+RUN pip install pillow==8.3.2
+RUN pip install gym==0.25.2
+
+# Install gym-donkeycar dependencies
+RUN pip install websocket-client==1.2.1
+RUN pip install msgpack==1.0.2
+
+# Clone and install gym-donkeycar
+RUN git clone https://github.com/tawnkramer/gym-donkeycar.git && \
+    cd gym-donkeycar && \
+    pip install -e .
+
+# Create directory for user code
+RUN mkdir -p /app/code
+
+# Set working directory to code folder
+WORKDIR /app/code
+
+# Keep container running and show logs
+CMD ["bash", "-c", "echo 'Python client container started successfully' && tail -f /dev/null"]
