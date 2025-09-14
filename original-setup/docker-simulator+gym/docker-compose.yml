@@ -1,0 +1,30 @@
+services:
+  donkey-sim:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DISPLAY=host.docker.internal:0.0
+    ports:
+      - "9091:9091"  # Port för simulator-kommunikation
+    stdin_open: true
+    tty: true
+    networks:
+      - donkey-network
+
+  python-client:
+    build:
+      context: .
+      dockerfile: Dockerfile.python-client
+    depends_on:
+      - donkey-sim
+    networks:
+      - donkey-network
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./python_code:/app/code  # Mapp för din Python-kod
+
+networks:
+  donkey-network:
+    driver: bridge

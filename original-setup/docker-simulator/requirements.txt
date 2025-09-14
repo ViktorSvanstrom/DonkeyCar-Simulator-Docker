@@ -1,0 +1,20 @@
+# DonkeyCar Simulator - Minimala beroenden för Python 3.13
+# Installera med: pip install -r requirements.txt
+
+# Grundläggande verktyg
+setuptools
+wheel
+
+# Endast nödvändiga paket för gym-donkeycar
+numpy
+opencv-python-headless
+pillow
+gym
+websocket-client
+msgpack
+
+# För att installera gym-donkeycar (använd den lokala kopian)
+# Kör efter pip install -r requirements.txt:
+# cd gym-donkeycar
+# pip install -e .
+# cd ..
